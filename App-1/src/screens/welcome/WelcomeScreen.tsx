@@ -12,7 +12,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { COLORS, SIZES, ANIMATION } from "../../constants/theme";
 import Text from "../../components/ui/Text";
-import { RootStackParamList } from "../../app/Navigation";
+import { RootStackParamList } from "../../navigation/types";
 
 type WelcomeScreenNavigationProp = StackNavigationProp<
   RootStackParamList,

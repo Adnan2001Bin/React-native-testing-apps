@@ -1,15 +1,19 @@
 export const COLORS = {
-  primary: "#5D198B", // Hostelworld-ish Purple
-  secondary: "#D11C68", // Pinkish/Magenta from screenshot
-  backgroundPurple: "#4A0D85",
-  backgroundPink: "#D60057",
-  textWhite: "#FFFFFF",
-  textBlack: "#1C1C1C",
-  textGray: "#888888",
+  primary: "#5B21B6", // Purple
+  secondary: "#10B981", // Green
+  accent: "#F59E0B", // Orange
+  background: "#FFFFFF",
+  backgroundSecondary: "#F9FAFB",
+  text: "#111827",
+  textSecondary: "#6B7280",
+  textLight: "#9CA3AF",
+  border: "#E5E7EB",
+  error: "#EF4444",
+  success: "#10B981",
+  warning: "#F59E0B",
+  info: "#3B82F6",
   white: "#FFFFFF",
+  backgroundPink: "#FF4081",
   transparent: "transparent",
-  success: "#00C853",
-  error: "#D50000",
-  buttonPrimary: "#FFFFFF",
-  buttonSecondary: "rgba(255, 255, 255, 0.2)",
+  overlay: "rgba(0, 0, 0, 0.5)",
 };

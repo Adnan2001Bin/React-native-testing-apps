@@ -1,114 +1,111 @@
-import React from "react";
-import { View, StyleSheet, ScrollView, Image } from "react-native";
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  FlatList,
+  TouchableOpacity,
+  StatusBar,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Text from "../../components/ui/Text";
-import { COLORS, SIZES } from "../../constants/theme";
-import Button from "../../components/buttons/Button";
+import Animated, { FadeInUp, SlideInUp } from "react-native-reanimated";
+import { COLORS } from "../../constants/colors";
+import { SPACING } from "../../constants/spacing";
+import { TYPOGRAPHY } from "../../constants/typography";
+import { PLACES, Place } from "../../constants/mockData";
+import CustomHeader from "../../components/navigation/CustomHeader";
+import PlaceCard from "../../components/cards/PlaceCard";
+import PlaceDetailModal from "../../components/modals/PlaceDetailModal";
 
 const HomeScreen = () => {
-  const recommended = [
-    {
-      id: 1,
-      name: "Bali, Indonesia",
-      rating: "4.8 ★",
-      image:
-        "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=600&q=80",
-    },
-    {
-      id: 2,
-      name: "Kyoto, Japan",
-      rating: "4.9 ★",
-      image:
-        "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=600&q=80",
-    },
-    {
-      id: 3,
-      name: "Santorini, Greece",
-      rating: "4.7 ★",
-      image:
-        "https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?auto=format&fit=crop&w=600&q=80",
-    },
-  ];
+  const [selectedPlace, setSelectedPlace] = useState<Place | null>(null);
+
+  const renderRecommendedItem = ({
+    item,
+    index,
+  }: {
+    item: Place;
+    index: number;
+  }) => (
+    <Animated.View entering={FadeInUp.delay(index * 100).duration(500)}>
+      <PlaceCard place={item} onPress={() => setSelectedPlace(item)} />
+    </Animated.View>
+  );
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContent}>
-        <View style={styles.header}>
-          <Text variant="h1" color={COLORS.textBlack}>
-            Explore the world
-          </Text>
-          <Text
-            variant="body3"
-            color={COLORS.textGray}
-            style={{ marginTop: 8 }}
-          >
-            Where to next?
-          </Text>
-        </View>
+    <SafeAreaView style={styles.container} edges={["top"]}>
+      <StatusBar barStyle="dark-content" backgroundColor={COLORS.background} />
 
-        <View style={styles.searchBar}>
-          <Text color={COLORS.textGray}>Search destinations...</Text>
-        </View>
+      <CustomHeader showProfile showNotification />
 
-        <View style={styles.section}>
-          <Text
-            variant="h3"
-            color={COLORS.textBlack}
-            style={{ marginBottom: 16 }}
-          >
-            Recommended
-          </Text>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            {recommended.map((item) => (
-              <View key={item.id} style={styles.card}>
-                <Image source={{ uri: item.image }} style={styles.cardImage} />
-                <View style={styles.textOverlay}>
-                  <Text variant="h4" color={COLORS.white}>
-                    {item.name}
-                  </Text>
-                  <Text
-                    variant="body4"
-                    color={COLORS.white}
-                    style={{ opacity: 0.8 }}
-                  >
-                    {item.rating}
-                  </Text>
-                </View>
-              </View>
-            ))}
-          </ScrollView>
-        </View>
-
-        <View style={styles.section}>
-          <Text
-            variant="h3"
-            color={COLORS.textBlack}
-            style={{ marginBottom: 16 }}
-          >
-            Recent
-          </Text>
-          <View style={[styles.card, { width: "100%" }]}>
-            <Image
-              source={{
-                uri: "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-              }}
-              style={styles.cardImage}
-            />
-            <View style={styles.textOverlay}>
-              <Text variant="h3" color={COLORS.white}>
-                Swiss Alps
-              </Text>
-              <Text
-                variant="body3"
-                color={COLORS.white}
-                style={{ opacity: 0.8 }}
-              >
-                Continue exploring
-              </Text>
-            </View>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.scrollContent}
+      >
+        {/* Hero Section */}
+        <Animated.View
+          entering={SlideInUp.duration(600)}
+          style={styles.heroSection}
+        >
+          <Text style={[styles.heroTitle, TYPOGRAPHY.h1]}>Explore the</Text>
+          <View style={styles.heroRow}>
+            <Text style={[styles.heroTitle, TYPOGRAPHY.h1]}>Beautiful </Text>
+            <Text style={[styles.heroTitleAccent, TYPOGRAPHY.h1]}>world!</Text>
+            <View style={styles.underline} />
           </View>
+        </Animated.View>
+
+        {/* Recommended Places */}
+        <View style={styles.sectionHeader}>
+          <Text style={TYPOGRAPHY.h3}>Best Destination</Text>
+          <TouchableOpacity>
+            <Text style={styles.viewAll}>View all</Text>
+          </TouchableOpacity>
         </View>
+
+        <FlatList
+          data={PLACES}
+          renderItem={renderRecommendedItem}
+          keyExtractor={(item) => item.id}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.horizontalList}
+          snapToInterval={250 + SPACING.md}
+          decelerationRate="fast"
+        />
+
+        {/* Popular Destinations */}
+        <View style={styles.sectionHeader}>
+          <Text style={TYPOGRAPHY.h3}>Popular Destinations</Text>
+          <TouchableOpacity>
+            <Text style={styles.viewAll}>View all</Text>
+          </TouchableOpacity>
+        </View>
+
+        <FlatList
+          data={PLACES}
+          renderItem={renderRecommendedItem}
+          keyExtractor={(item) => item.id}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.horizontalList}
+          snapToInterval={250 + SPACING.md}
+          decelerationRate="fast"
+        />
+
+        {/* Removed Grid Container */
+        /* <View style={styles.gridContainer}>
+             ...
+           </View> */}
       </ScrollView>
+
+      {/* Place Detail Modal */}
+      <PlaceDetailModal
+        visible={!!selectedPlace}
+        place={selectedPlace}
+        onClose={() => setSelectedPlace(null)}
+      />
     </SafeAreaView>
   );
 };
@@ -116,47 +113,65 @@ const HomeScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.white,
+    backgroundColor: COLORS.background,
   },
   scrollContent: {
-    padding: SIZES.padding,
+    paddingBottom: SPACING.xl,
   },
-  header: {
-    marginTop: 20,
-    marginBottom: 30,
+  heroSection: {
+    paddingHorizontal: SPACING.lg,
+    marginVertical: SPACING.md,
   },
-  searchBar: {
-    height: 50,
-    backgroundColor: "#f5f5f5",
-    borderRadius: SIZES.radius,
-    justifyContent: "center",
-    paddingHorizontal: 20,
-    marginBottom: 30,
+  heroTitle: {
+    color: "#1F2937",
+    lineHeight: 40,
   },
-  section: {
-    marginBottom: 30,
-    overflow: "hidden",
+  heroRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    position: "relative",
   },
-  cardImage: {
-    width: "100%",
-    height: "100%",
-    resizeMode: "cover",
+  heroTitleAccent: {
+    color: COLORS.accent,
+    lineHeight: 40,
   },
-  textOverlay: {
+  underline: {
     position: "absolute",
-    bottom: 0,
-    left: 0,
+    bottom: 2,
     right: 0,
-    padding: 16,
-    backgroundColor: "rgba(0,0,0,0.3)",
-    justifyContent: "flex-end",
+    width: 80,
+    height: 4,
+    backgroundColor: COLORS.accent,
+    borderRadius: 2,
+    transform: [{ rotate: "-2deg" }],
+    zIndex: -1,
+    opacity: 0.6,
   },
-  card: {
-    width: 200,
-    height: 250,
-    backgroundColor: "#f0f0f0",
-    borderRadius: 16,
-    marginRight: 16,
+  sectionHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: SPACING.lg,
+    marginBottom: SPACING.md,
+    marginTop: SPACING.sm,
+  },
+  viewAll: {
+    color: COLORS.primary,
+    fontWeight: "600",
+  },
+  horizontalList: {
+    paddingHorizontal: SPACING.lg,
+    paddingBottom: SPACING.md,
+  },
+  gridContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    paddingHorizontal: SPACING.lg,
+    justifyContent: "space-between",
+  },
+  gridItem: {
+    width: "100%",
+    marginBottom: SPACING.md,
   },
 });
 

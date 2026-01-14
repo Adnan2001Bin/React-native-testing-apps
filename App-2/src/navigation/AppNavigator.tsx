@@ -15,7 +15,7 @@ const AppNavigator = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Welcome"
+        initialRouteName="Loading"
         screenOptions={{
           headerShown: false,
           animation: "fade", // Use simple fade for screen transitions to let custom animations shine

@@ -15,7 +15,7 @@ import ChatDemo from "./steps/ChatDemo";
 import Discover from "./steps/Discover";
 import Button from "../../components/buttons/Button";
 import { COLORS, SIZES, ANIMATION } from "../../constants/theme";
-import { RootStackParamList } from "../../app/Navigation";
+import { RootStackParamList } from "../../navigation/types";
 import Text from "../../components/ui/Text";
 
 import PaginationDots from "../../components/ui/PaginationDots";
@@ -55,7 +55,7 @@ const OnboardingScreen = () => {
     if (currentStep < TOTAL_STEPS - 1) {
       setCurrentStep((prev) => prev + 1);
     } else {
-      navigation.replace("Home");
+      navigation.replace("Main");
     }
   };
 

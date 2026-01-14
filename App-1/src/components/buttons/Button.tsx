@@ -24,11 +24,11 @@ const Button: React.FC<ButtonProps> = ({
   labelStyle,
   variant = "primary",
 }) => {
-  let backgroundColor = COLORS.buttonPrimary;
+  let backgroundColor = COLORS.white;
   let textColor = COLORS.primary;
 
   if (variant === "secondary") {
-    backgroundColor = COLORS.buttonSecondary;
+    backgroundColor = COLORS.secondary;
     textColor = COLORS.white;
   } else if (variant === "transparent") {
     backgroundColor = "transparent";
